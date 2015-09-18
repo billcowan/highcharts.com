@@ -1364,6 +1364,7 @@ SVGRenderer.prototype = {
 			childNodes = textNode.childNodes,
 			styleRegex,
 			hrefRegex,
+            dxRegex,
 			parentX = attr(textNode, 'x'),
 			textStyles = wrapper.styles,
 			width = wrapper.textWidth,
@@ -1402,6 +1403,7 @@ SVGRenderer.prototype = {
 
 			styleRegex = /<.*style="([^"]+)".*>/;
 			hrefRegex = /<.*href="(http[^"]+)".*>/;
+            dxRegex = /<.*dx="([^"]+)".*>/;
 
 			if (tempParent) {
 				tempParent.appendChild(textNode); // attach it to the DOM to read offset width
@@ -1447,6 +1449,10 @@ SVGRenderer.prototype = {
 							css(tspan, { cursor: 'pointer' });
 						}
 
+                        if (dxRegex.test(span) && !forExport) {
+                            attr(tspan, 'dx', span.match(dxRegex)[1]);
+                        }
+
 						span = unescapeAngleBrackets(span.replace(/<(.|\n)*?>/g, '') || ' ');
 
 						// Nested tags aren't supported, and cause crash in Safari (#1596)
@@ -1459,7 +1465,7 @@ SVGRenderer.prototype = {
 								if (lineNo && parentX !== null) {
 									attributes.x = parentX;
 								}
-							} else {
+							} else if (!attributes.dx) {
 								attributes.dx = 0; // #16
 							}
 
