@@ -1450,7 +1450,7 @@ SVGRenderer.prototype = {
 						}
 
                         if (dxRegex.test(span) && !forExport) {
-                            attr(tspan, 'dx', span.match(dxRegex)[1]);
+                            attributes.dx = span.match(dxRegex)[1];
                         }
 
 						span = unescapeAngleBrackets(span.replace(/<(.|\n)*?>/g, '') || ' ');
