@@ -17993,7 +17993,7 @@ if (seriesTypes.column) {
 					);
 
 					if (isIntersecting) {
-						(label1.labelrank < label2.labelrank ? label1 : label2).newOpacity = 0;
+						(label1.labelrank < label2.labelrank ? label2 : label1).newOpacity = 0;
 					}
 				}
 			}
@@ -18457,15 +18457,17 @@ extend(Point.prototype, {
 			// trigger the event
 			point.firePointEvent('mouseOver');
 
-			// update the tooltip
-			if (tooltip && (!tooltip.shared || series.noSharedTooltip)) {
-				tooltip.refresh(point, e);
-			}
+			if (point.series) {
+				// update the tooltip
+				if (tooltip && (!tooltip.shared || series.noSharedTooltip)) {
+					tooltip.refresh(point, e);
+				}
 
-			// hover this
-			point.setState(HOVER_STATE);
-			if (!byProximity) {
-				chart.hoverPoint = point;
+				// hover this
+				point.setState(HOVER_STATE);
+				if (!byProximity) {
+					chart.hoverPoint = point;
+				}
 			}
 		}
 	},
